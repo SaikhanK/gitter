@@ -1,29 +1,34 @@
-# AppDish (Uni Project)
+# Gitter
 
-Platform for creating and sharing recipes using Spring Boot
+Gitter is a X/Twitter Clone created using Django
 
 ## Used Technologies
 
 Here are the languages and frameworks I utilized in this project:
 - **Programming Languages:**
-  - Java
+  - Python 
+  - JavaScript
   - HTML
   - CSS
 
 - **Frameworks and Libraries:**
-  - Spring Boot (Java)
-  - Thymeleaf
+  - Django (Python)
 
 - **Databases:**
   - PostgreSQL
 
 - **Other Tools and Technologies:**
   - Git & GitHub
+  - Docker
 
 ## Features:
 
- - Recipe Creation
- - Recipe Deletion
- - Recipe Editing
- - Recipe Commenting
- - Recipe Rating
+ - Post Creation
+ - Post Deletion
+ - Post Editing
+ - Post Commenting
+ - Post Reposting
+ - Post Like
+ - User Registration
+ - User Login
+ - User Logout
