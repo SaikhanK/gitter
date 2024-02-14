@@ -1,0 +1,180 @@
+{%extends "base.html"%}
+
+{%block content%}
+{%load static%}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f0f0f0;
+    }
+
+    .post-container {
+        max-width: 600px;
+        margin: 20px auto;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-left: 30%;
+    }
+
+    .post {
+        padding: 16px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .user-info img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 10px;
+    }
+
+    .username {
+        font-weight: bold;
+    }
+
+    .post-content {
+        margin-top: 10px;
+    }
+
+    .comments {
+        padding: 16px;
+    }
+
+    .comment {
+        margin-bottom: 16px;
+    }
+
+    .comment-content {
+        margin-top: 8px;
+    }
+
+    .comment-form {
+        padding: 16px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .comment-form form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .comment-form button {
+        margin-top: 10px;
+        padding: 8px;
+        background-color: #1da1f2;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .comment-form button:hover {
+        background-color: #0d8edf;
+    }
+
+    .like-section {
+        display: flex;
+        align-items: center;
+        margin-top: 10px;
+    }
+
+    .like-button {
+        background-color: #1da1f2;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        padding: 8px;
+        cursor: pointer;
+    }
+
+    .like-button:hover {
+        background-color: #0d8edf;
+    }
+
+    .like-count {
+        margin-left: 10px;
+        color: #555;
+    }
+
+    .repost-section {
+        display: flex;
+        align-items: center;
+        margin-top: 10px;
+    }
+
+    .repost-button {
+        background-color: #1da1f2;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        padding: 8px;
+        cursor: pointer;
+    }
+
+    .repost-button:hover {
+        background-color: #0d8edf;
+    }
+</style>
+{%if post.author == request_user%}
+<a href="{%url 'post_edit' post.pk%}" style="margin-left: 30%;"> edit post</a>
+{%endif%}
+{%if post.author == request_user%}
+<a href="{%url 'post_delete' post.pk%}" style="margin-left: 30%;"> delete post</a>
+{%endif%}
+
+
+<body>
+    <div class="post-container">
+        <div class="post">
+            <div class="user-info">
+                {%if post.author.profile_picture%}
+                <img src="{{post.author.profile_picture.url}}" alt="User Avatar">
+                {%endif%}
+                <span class="username">{{post.author.username}}</span>
+            </div>
+            <p class="post-content">{{post.body}}</p>
+            <form action="{%url 'post_like' post.pk%}" method="post">
+                {%csrf_token%}
+                <div class="like-section">
+                    <button class="like-button" type="submit">Like</button>
+                    <span class="like-count">{{post_likes.count}}</span>
+                </div>
+            </form>
+            <form action="{%url 'post_repost' post.pk%}">
+                <div class="repost-section">
+                    <button class="reposy-button" type="submit">Repost</button>
+                </div>
+            </form>
+        </div>
+
+
+
+        <div class="comment-form">
+            <form method="post" action="{% url 'post_comment' post.pk%}">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Kommentar hinzufügen</button>
+            </form>
+        </div>
+        {%for comment in post_comment%}
+        <div class="comments">
+            <div class="comment">
+                <div class="user-info">
+                    {%if comment.author.profile_picture%}
+                    <img src="{{comment.author.profile_picture.url}}" alt="Commenter Avatar">
+                    {%endif%}
+                    <span class="username">{{comment.author.username}}</span>
+                </div>
+                <p class="comment-content">{{comment.body}}</p>
+            </div>
+        </div>
+        {%endfor%}
+    </div>
+</body>
+
+</html>
+
+{%endblock content%}

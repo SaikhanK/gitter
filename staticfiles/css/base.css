@@ -1,0 +1,27 @@
+/* Stil für die Sidebar */
+.w3-sidebar {
+    height: 100%;
+    width: 25%;
+    /* Breite der Sidebar anpassen */
+    background-color: #f1f1f1;
+    /* Hintergrundfarbe der Sidebar */
+    position: fixed;
+    overflow: auto;
+}
+
+/* Stil für die Links in der Sidebar */
+.w3-bar-item {
+    padding: 16px;
+    text-decoration: none;
+    font-size: 18px;
+    color: #000;
+    /* Farbe der Link-Texte */
+    display: block;
+}
+
+/* Ändern des Stils beim Überfahren mit der Maus */
+.w3-bar-item:hover {
+    background-color: #555;
+    color: #fff;
+    /* Farbe der Link-Texte bei Hover */
+}

@@ -1,0 +1,223 @@
+{%extends "base.html"%}
+{%load static%}
+{%block content%}
+{%load static%}
+<html>
+
+<style>
+    .profile_picture {
+        border-radius: 50%;
+        height: 150px;
+        width: 150px;
+        margin-top: -75px;
+        margin-left: 40%;
+    }
+
+    .username {
+        margin-left: 44%;
+
+    }
+
+    .banner_container {
+        position: relative;
+        padding: 100px 300px;
+    }
+
+    .profile_banner {
+        position: absolute;
+        width: 100%;
+        object-fit: cover;
+        z-index: -100;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+    }
+
+    header {
+        background-color: #00aced;
+        color: white;
+        padding: 10px;
+        text-align: center;
+    }
+
+    .posts {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 20px;
+    }
+
+    .post {
+        width: 400px;
+        background-color: white;
+        border: 1px solid #ddd;
+        margin: 10px;
+        padding: 10px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .post img {
+        border-radius: 50%;
+        margin-right: 10px;
+        width: 50;
+        height: 50;
+    }
+
+    .post_content {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .post_actions {
+        margin-top: 10px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .post_actions button {
+        background-color: #00aced;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .reposts {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 20px;
+    }
+
+    .repost {
+        width: 400px;
+        background-color: white;
+        border: 1px solid #ddd;
+        margin: 10px;
+        padding: 10px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .repost img {
+        border-radius: 50%;
+        margin-right: 10px;
+        width: 50;
+        height: 50;
+    }
+
+    .repost_content {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .repost_actions {
+        margin-top: 10px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .repost_actions button {
+        background-color: #00aced;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+</style>
+
+
+<div class="detail" , style="margin-left: 30%;">
+    {%if viewed_user.profile_banner%}
+    <div class="banner_container">
+        <img src="{{viewed_user.profile_banner.url}}" class="profile_banner">
+    </div>
+    {%endif%}
+    {%if viewed_user.profile_picture%}
+    <img src="{{viewed_user.profile_picture.url}}" class="profile_picture">
+    {%endif%}
+    <h2 class="username">{{viewed_user.username}}</h2>
+</div>
+
+
+{%for user_content in user_post%}
+
+<div class="posts">
+    <div class="post">
+        {%if viewed_user.profile_picture%}
+        <img src="{{viewed_user.profile_picture.url}}">
+
+        {%if user_content.post.body%}
+        <p>{{user_content.body}}</p>
+        {%endif%}
+        {%endif%}
+
+        {%if user_content.post%}
+        <div class="reposts">
+            <div class="repost">
+                {%if viewed_user.profile_picture%}
+                <p>{{user_content.repost.body}}</p>
+                {%if user_content.post.author.profile_picture%}
+                <img src="{{user_content.post.author.profile_picture.url}}">
+                {%endif%}
+                {%endif%}
+                <div class="repost_content">
+
+                    {%if post.post%}
+                    <p>das ist ein repost</p>
+                    {%else%}
+                    <strong>{{user_content.post.author.username}}</strong>
+                    <p style="margin-left: 30%;">{{post.body}}</p>
+                    <p>{{user_content.post.body}}</p>
+                    <div class="post_actions">
+
+                    </div>
+                    {%endif%}
+                </div>
+            </div>
+        </div>
+        <div class="post_content">
+            <div class="post_actions">
+                <form action="{%url 'post_like' pk=user_content.id%}" method="post" style="margin-left: 30%;">
+                    {%csrf_token %}
+                    <button class="btn btn-success ml-2" type="submit">Like</button>
+                </form>
+                <form action="{%url 'post_repost' user_content.pk%}">
+                    {%csrf_token%}
+                    <button type="submit">Repost</button>
+                </form>
+            </div>
+
+            <p>das ist ein repost</p>
+            {%else%}
+            <strong>{{viewed_user.username}}</strong>
+            <p style="margin-left: 30%;">{{post.body}}</p>
+            <p>{{user_content.body}}</p>
+            <div class="post_actions">
+                <form action="{%url 'post_like' pk=user_content.id%}" method="post" style="margin-left: 30%;">
+                    {%csrf_token %}
+                    <button class="btn btn-success ml-2" type="submit">Like</button>
+                </form>
+                <form action="{%url 'post_repost' user_content.pk%}">
+                    {%csrf_token%}
+                    <button type="submit">Repost</button>
+                </form>
+            </div>
+            {%endif%}
+        </div>
+    </div>
+</div>
+{%endfor%}
+
+</html>
+{%endblock content%}

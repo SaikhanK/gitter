@@ -1,0 +1,220 @@
+{% extends "base.html"%}
+
+{% block content %}
+{%load static%}
+
+<head>
+    <link rel="stylesheet" href="{% static 'css/home.css'%}">
+
+    <style>
+        body {
+            background-color: black;
+        }
+
+        .profile_picture {
+            border-radius: 50%;
+            height: 150px;
+            width: 150px;
+            margin-top: -75px;
+            margin-left: 40%;
+        }
+
+        .username {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .banner_container {
+            position: relative;
+            padding: 100px 300px;
+        }
+
+        .profile_banner {
+            position: absolute;
+            width: 100%;
+            object-fit: cover;
+            z-index: -100;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            color: white;
+            padding: 10px;
+            text-align: center;
+            background-color: black;
+        }
+
+
+        .posts {
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            justify-content: center;
+            width: 500px;
+            margin-left: 35%;
+        }
+
+        .post {
+            width: 500px;
+            background-color: white;
+            border: 1px solid #ddd;
+            margin: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            float: left;
+            border-right: 1px solid blue;
+
+        }
+
+        .post img {
+            border-radius: 50%;
+            margin-right: 10px;
+            width: 50px;
+            height: 50px;
+        }
+
+        .post_content {
+            display: flex;
+            flex-direction: column;
+            width: calc(100% - 60px);
+            height: auto;
+            max-width: 350px;
+        }
+
+        .post_body {
+            text-align: center;
+            word-wrap: break-word;
+            width: auto;
+            height: auto;
+        }
+
+        .post_actions {
+            align-items: center;
+            border-left: 1px solid #eee;
+            display: flex;
+            flex-direction: column;
+            /* Stelle die Buttons vertikal an */
+        }
+
+        .post_actions button {
+            margin-bottom: 5px;
+            /* Füge etwas Abstand zwischen den Buttons hinzu */
+            background-color: #00aced;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 90px;
+            height: 30px;
+
+        }
+
+        .reposts {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .repost {
+            width: 400px;
+            background-color: white;
+            border: 1px solid #ddd;
+            margin: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .repost img {
+            border-radius: 50%;
+            margin-right: 10px;
+            width: 50;
+            height: 50;
+        }
+
+        .repost_content {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .repost_actions {
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .repost_actions button {
+            background-color: #00aced;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .post_form {
+            width: auto;
+            height: auto;
+            border-left: 1px solid blue;
+        }
+    </style>
+</head>
+
+{% for post in post_list %}
+<div class="post_form">
+    <div class="posts">
+        <div class="post" onclick="redirectToPostDetail('{{ post.id }}')">
+            {% if post.author.profile_picture %}
+            <div onclick="redirectToUserDetail('{{ post.author.id }}')">
+                <img src="{{ post.author.profile_picture.url }}">
+            </div>
+            {% endif %}
+            <div class="post_content">
+                <div>
+                    <a href="{% url 'user_detail' post.author.id %}" class="username">{{ post.author.username }}</a>
+                </div>
+                <p class="post_body">{{ post.body }}</p>
+            </div>
+
+
+            <div class="post_actions">
+                <form action="{% url 'post_like' pk=post.id %}" method="post" style="margin-left: 30%;">
+                    {% csrf_token %}
+                    <button class="btn btn-success ml-2" type="submit">Like</button>
+                </form>
+                <form action="{% url 'post_repost' post.pk %}">
+                    {% csrf_token %}
+                    <button class="btn btn-success ml-2" type="submit">Repost</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+<script>
+    function redirectToPostDetail(postId) {
+        var postDetailUrl = '/post/' + postId;
+        console.log("post");
+        window.location.href = postDetailUrl;
+    }
+    function redirectToUserDetail(userId) {
+        var userDetailUrl = '/user/' + userId + "/detail";
+        console.log("User");
+        window.location.href = userDetailUrl;
+    }
+</script>
+{% endblock content %}

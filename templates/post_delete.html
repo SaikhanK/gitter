@@ -1,0 +1,10 @@
+{%extends "base.html"%}
+
+{%block content%}
+<form action="" method="post" style="margin-left: 30%;"> {%csrf_token%}
+
+    <p>willst du den post: "{{post.title}}" wirklich löschen ?</p>
+    <input type="submit" value="Weiter">
+
+</form>
+{%endblock content%}

@@ -1,0 +1,96 @@
+{%load static%}
+
+<head>
+    <header>
+    </header>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+
+    <style>
+        body {
+            background-color: #000;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #f8f8f8;
+            /* Hintergrundfarbe anpassen */
+            padding: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: relative;
+            /* Optional: Schatten hinzufügen */
+        }
+
+        #logo {
+            max-width: 100px;
+            /* Maximalbreite des Logos anpassen */
+            height: auto;
+            border-radius: 10px;
+            /* Radius für abgerundete Ecken anpassen */
+        }
+
+        #main_content {
+            margin-top: 10px;
+            /* Mindestens so groß wie die Höhe des Headers */
+
+            padding: 20px;
+
+            display: inline-block;
+            /* Optional: Innenabstand für den Hauptinhalt hinzufügen */
+        }
+
+        /* Stil für die Sidebar */
+        .w3-sidebar {
+            height: 100%;
+            width: 25%;
+            position: fixed;
+
+        }
+
+        /* Stil für die Links in der Sidebar */
+        .w3-bar-item {
+            padding: 16px;
+            text-decoration: none;
+            font-size: 18px;
+            color: #000;
+            /* Farbe der Link-Texte */
+            display: block;
+        }
+
+        /* Ändern des Stils beim Überfahren mit der Maus */
+        .w3-bar-item:hover {
+            background-color: #555;
+            color: #fff;
+            /* Farbe der Link-Texte bei Hover */
+        }
+    </style>
+
+</head>
+
+
+<header>
+    <img id="logo" src="static/img/Unbenanntes_Projekt.png">
+</header>
+
+<div class="w3-sidebar" id="main_content">
+
+    {%if user.is_authenticated%}
+    <a href="{%url 'user_detail' user.pk%}" class="w3-bar-item w3-button">{{user.username}}</a>
+    <a href="{% url 'logout' %}" class="w3-bar-item w3-button">Log out</a>
+    {%else%}
+    <a href="{% url 'login' %}" class="w3-bar-item w3-button">Log In</a>
+    <a href="{%url 'signup'%}" class="w3-bar-item w3-button">Signup</a>
+    {%endif%}
+    <a href="{%url 'home'%}" class="w3-bar-item w3-button">Home</a>
+    <a href="{%url 'post_new'%}" class="w3-bar-item w3-button">Posten</a>
+    <a href="#" class="w3-bar-item w3-button">Link 3</a>
+</div>
+
+
+
+
+{%block content%}
+
+{%endblock content%}
